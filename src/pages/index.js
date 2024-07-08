@@ -27,9 +27,9 @@ export default function Home() {
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     const newPosts = [
-      { id: posts.length + 1, author: 'John Doe', content: 'Just launched my new startup! Excited for this journey. #entrepreneurlife', likes: 15, comments: [] },
-      { id: posts.length + 2, author: 'Jane Smith', content: 'Beautiful day for a hike! 🏞️ #naturelovers', likes: 22, comments: [] },
-      { id: posts.length + 3, author: 'Mike Johnson', content: 'Anyone else binge-watching the new series on Netflix? No spoilers please! 📺', likes: 8, comments: [] },
+      { id: `post-${Date.now()}-1`, author: 'John Doe', content: 'Just launched my new startup! Excited for this journey. #entrepreneurlife', likes: 15, comments: [] },
+      { id: `post-${Date.now()}-2`, author: 'Jane Smith', content: 'Beautiful day for a hike! 🏞️ #naturelovers', likes: 22, comments: [] },
+      { id: `post-${Date.now()}-3`, author: 'Mike Johnson', content: 'Anyone else binge-watching the new series on Netflix? No spoilers please! 📺', likes: 8, comments: [] },
     ];
     
     setPosts(prevPosts => [...prevPosts, ...newPosts]);
@@ -45,7 +45,7 @@ export default function Home() {
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         const post = {
-          id: posts.length + 1,
+          id: `post-${Date.now()}`,
           author: 'Current User',
           content: newPost,
           image: newPostImage,

@@ -14,6 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { CommentSkeleton } from './SkeletonLoader';
 
 export const Post = ({ post }) => {
   const [isCommenting, setIsCommenting] = useState(false);
@@ -21,6 +22,7 @@ export const Post = ({ post }) => {
   const [comments, setComments] = useState(post.comments || []);
   const [likes, setLikes] = useState(post.likes);
   const [reaction, setReaction] = useState(null);
+  const [isLoadingComments, setIsLoadingComments] = useState(false);
 
   const handleReaction = (newReaction) => {
     if (reaction === newReaction) {
@@ -33,16 +35,20 @@ export const Post = ({ post }) => {
     }
   };
 
-  const handleComment = () => {
+  const handleComment = async () => {
     if (comment.trim()) {
+      setIsLoadingComments(true);
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
       const newComment = {
-        id: comments.length + 1,
+        id: `comment-${Date.now()}`,
         author: 'Current User',
         content: comment,
         timestamp: new Date().toISOString(),
       };
       setComments([...comments, newComment]);
       setComment('');
+      setIsLoadingComments(false);
     }
   };
 
@@ -144,6 +150,7 @@ export const Post = ({ post }) => {
             </div>
           </div>
         ))}
+        {isLoadingComments && <CommentSkeleton />}
         <div className="flex items-center mt-4">
           <Avatar className="mr-4">
             <AvatarImage src="https://github.com/shadcn.png" />
@@ -155,7 +162,7 @@ export const Post = ({ post }) => {
             placeholder="Write a comment..."
             className="flex-grow mr-2"
           />
-          <Button onClick={handleComment} size="icon">
+          <Button onClick={handleComment} size="icon" disabled={isLoadingComments}>
             <Send className="h-4 w-4" />
           </Button>
         </div>
