@@ -5,6 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThumbsUp, MessageCircle, Share2, Send } from 'lucide-react';
 import { motion } from "framer-motion";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export const Post = ({ post }) => {
   const [isCommenting, setIsCommenting] = useState(false);
@@ -33,6 +41,11 @@ export const Post = ({ post }) => {
       setComments([...comments, newComment]);
       setComment('');
     }
+  };
+
+  const handleShare = () => {
+    // In a real app, you would implement sharing functionality here
+    console.log('Sharing post:', post.id);
   };
 
   return (
@@ -65,10 +78,27 @@ export const Post = ({ post }) => {
             <MessageCircle className="w-4 h-4 mr-2" />
             Comment ({comments.length})
           </Button>
-          <Button variant="ghost" size="sm">
-            <Share2 className="w-4 h-4 mr-2" />
-            Share
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <Share2 className="w-4 h-4 mr-2" />
+                Share
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Share this post</DialogTitle>
+                <DialogDescription>
+                  Choose how you want to share this post
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex flex-col space-y-2">
+                <Button onClick={handleShare}>Share to your profile</Button>
+                <Button onClick={handleShare}>Share via message</Button>
+                <Button onClick={handleShare}>Copy link</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
         {Array.isArray(comments) && comments.map((comment) => (
           <div key={comment.id} className="flex items-start mb-4">
