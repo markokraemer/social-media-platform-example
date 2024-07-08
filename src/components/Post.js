@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThumbsUp, MessageCircle, Share2, Send } from 'lucide-react';
+import { motion } from "framer-motion";
 
 export const Post = ({ post }) => {
   const [isCommenting, setIsCommenting] = useState(false);
@@ -54,10 +55,12 @@ export const Post = ({ post }) => {
           <img src={post.image} alt="Post content" className="mb-4 rounded-lg max-h-96 w-full object-cover" />
         )}
         <div className="flex items-center justify-between border-t border-b py-2 mb-4">
-          <Button variant="ghost" size="sm" onClick={handleLike} className={isLiked ? 'text-blue-500' : ''}>
-            <ThumbsUp className="w-4 h-4 mr-2" />
-            Like ({likes})
-          </Button>
+          <motion.div whileTap={{ scale: 0.9 }}>
+            <Button variant="ghost" size="sm" onClick={handleLike} className={isLiked ? 'text-blue-500' : ''}>
+              <ThumbsUp className="w-4 h-4 mr-2" />
+              Like ({likes})
+            </Button>
+          </motion.div>
           <Button variant="ghost" size="sm" onClick={() => setIsCommenting(!isCommenting)}>
             <MessageCircle className="w-4 h-4 mr-2" />
             Comment ({comments.length})
@@ -67,7 +70,7 @@ export const Post = ({ post }) => {
             Share
           </Button>
         </div>
-        {comments.map((comment) => (
+        {Array.isArray(comments) && comments.map((comment) => (
           <div key={comment.id} className="flex items-start mb-4">
             <Avatar className="mr-4 mt-1">
               <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${comment.author}`} />
