@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ThumbsUp, MessageCircle, Share2, Send } from 'lucide-react';
+import { ThumbsUp, MessageCircle, Share2, Send, Heart, Smile, Angry } from 'lucide-react';
 import { motion } from "framer-motion";
 import {
   Dialog,
@@ -13,21 +13,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export const Post = ({ post }) => {
   const [isCommenting, setIsCommenting] = useState(false);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState(post.comments || []);
   const [likes, setLikes] = useState(post.likes);
-  const [isLiked, setIsLiked] = useState(false);
+  const [reaction, setReaction] = useState(null);
 
-  const handleLike = () => {
-    if (isLiked) {
+  const handleReaction = (newReaction) => {
+    if (reaction === newReaction) {
+      setReaction(null);
       setLikes(likes - 1);
     } else {
+      if (reaction) setLikes(likes - 1);
+      setReaction(newReaction);
       setLikes(likes + 1);
     }
-    setIsLiked(!isLiked);
   };
 
   const handleComment = () => {
@@ -68,12 +71,41 @@ export const Post = ({ post }) => {
           <img src={post.image} alt="Post content" className="mb-4 rounded-lg max-h-96 w-full object-cover" />
         )}
         <div className="flex items-center justify-between border-t border-b py-2 mb-4">
-          <motion.div whileTap={{ scale: 0.9 }}>
-            <Button variant="ghost" size="sm" onClick={handleLike} className={isLiked ? 'text-blue-500' : ''}>
-              <ThumbsUp className="w-4 h-4 mr-2" />
-              Like ({likes})
-            </Button>
-          </motion.div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex space-x-2">
+                  <motion.div whileTap={{ scale: 0.9 }}>
+                    <Button variant="ghost" size="sm" onClick={() => handleReaction('like')} className={reaction === 'like' ? 'text-blue-500' : ''}>
+                      <ThumbsUp className="w-4 h-4 mr-2" />
+                      Like
+                    </Button>
+                  </motion.div>
+                  <motion.div whileTap={{ scale: 0.9 }}>
+                    <Button variant="ghost" size="sm" onClick={() => handleReaction('love')} className={reaction === 'love' ? 'text-red-500' : ''}>
+                      <Heart className="w-4 h-4 mr-2" />
+                      Love
+                    </Button>
+                  </motion.div>
+                  <motion.div whileTap={{ scale: 0.9 }}>
+                    <Button variant="ghost" size="sm" onClick={() => handleReaction('laugh')} className={reaction === 'laugh' ? 'text-yellow-500' : ''}>
+                      <Smile className="w-4 h-4 mr-2" />
+                      Haha
+                    </Button>
+                  </motion.div>
+                  <motion.div whileTap={{ scale: 0.9 }}>
+                    <Button variant="ghost" size="sm" onClick={() => handleReaction('angry')} className={reaction === 'angry' ? 'text-orange-500' : ''}>
+                      <Angry className="w-4 h-4 mr-2" />
+                      Angry
+                    </Button>
+                  </motion.div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{likes} reactions</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <Button variant="ghost" size="sm" onClick={() => setIsCommenting(!isCommenting)}>
             <MessageCircle className="w-4 h-4 mr-2" />
             Comment ({comments.length})
