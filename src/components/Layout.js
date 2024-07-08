@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,7 @@ import { Notifications } from "@/components/Notifications";
 export const Layout = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
 
   // Mock notifications data
   const mockNotifications = [
@@ -19,8 +21,9 @@ export const Layout = ({ children }) => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // TODO: Implement actual search functionality
-    console.log('Searching for:', searchQuery);
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
   };
 
   return (

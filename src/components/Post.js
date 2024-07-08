@@ -50,6 +50,9 @@ export const Post = ({ post }) => {
       </CardHeader>
       <CardContent>
         <p className="mb-4">{post.content}</p>
+        {post.image && (
+          <img src={post.image} alt="Post content" className="mb-4 rounded-lg max-h-96 w-full object-cover" />
+        )}
         <div className="flex items-center justify-between border-t border-b py-2 mb-4">
           <Button variant="ghost" size="sm" onClick={handleLike} className={isLiked ? 'text-blue-500' : ''}>
             <ThumbsUp className="w-4 h-4 mr-2" />
