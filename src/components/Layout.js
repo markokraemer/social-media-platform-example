@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, Search, Menu, Home, User, Users } from 'lucide-react';
+import { Bell, Search, Menu, Home, User, Users, Settings, MessageCircle } from 'lucide-react';
 import { Notifications } from "@/components/Notifications";
 
 export const Layout = ({ children }) => {
@@ -68,7 +68,18 @@ export const Layout = ({ children }) => {
                   Friends
                 </Button>
               </Link>
+              <Link href="/messages">
+                <Button variant="ghost">
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  Messages
+                </Button>
+              </Link>
               <Notifications initialNotifications={mockNotifications} />
+              <Link href="/settings">
+                <Button variant="ghost">
+                  <Settings className="w-5 h-5" />
+                </Button>
+              </Link>
               <Avatar>
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>CN</AvatarFallback>
@@ -96,6 +107,18 @@ export const Layout = ({ children }) => {
                 <Button variant="ghost" className="w-full text-left mb-2">
                   <Users className="w-5 h-5 mr-2" />
                   Friends
+                </Button>
+              </Link>
+              <Link href="/messages">
+                <Button variant="ghost" className="w-full text-left mb-2">
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  Messages
+                </Button>
+              </Link>
+              <Link href="/settings">
+                <Button variant="ghost" className="w-full text-left mb-2">
+                  <Settings className="w-5 h-5 mr-2" />
+                  Settings
                 </Button>
               </Link>
               <form onSubmit={handleSearch} className="flex items-center mt-2">
