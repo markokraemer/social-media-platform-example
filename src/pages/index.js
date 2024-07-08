@@ -1,24 +1,49 @@
-import { Button } from "@/components/ui/button"
+import { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Post } from "@/components/Post";
 
 export default function Home() {
+  const [posts, setPosts] = useState([
+    { id: 1, author: 'John Doe', content: 'Just launched my new startup! Excited for this journey. #entrepreneurlife', likes: 15, comments: 5 },
+    { id: 2, author: 'Jane Smith', content: 'Beautiful day for a hike! 🏞️ #naturelovers', likes: 22, comments: 7 },
+    { id: 3, author: 'Mike Johnson', content: 'Anyone else binge-watching the new series on Netflix? No spoilers please! 📺', likes: 8, comments: 12 },
+  ]);
+
+  const [newPost, setNewPost] = useState('');
+
+  const handlePostSubmit = () => {
+    if (newPost.trim()) {
+      const post = {
+        id: posts.length + 1,
+        author: 'Current User',
+        content: newPost,
+        likes: 0,
+        comments: 0,
+      };
+      setPosts([post, ...posts]);
+      setNewPost('');
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to your App
-        </h1>
+    <div className="max-w-2xl mx-auto">
+      <Card className="mb-8">
+        <CardContent className="pt-6">
+          <Input
+            placeholder="What's on your mind?"
+            value={newPost}
+            onChange={(e) => setNewPost(e.target.value)}
+            className="mb-4"
+          />
+          <Button onClick={handlePostSubmit}>Post</Button>
+        </CardContent>
+      </Card>
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <Button className="mt-4">Hello World</Button>
-        </div>
-      </main>
+      {posts.map((post) => (
+        <Post key={post.id} post={post} />
+      ))}
     </div>
-  )
+  );
 }
