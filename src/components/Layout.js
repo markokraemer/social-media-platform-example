@@ -4,9 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell, Search, Menu, Home, User, Users } from 'lucide-react';
+import { Notifications } from "@/components/Notifications";
 
 export const Layout = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Mock notifications data
+  const mockNotifications = [
+    { id: 1, content: "John Doe liked your post", read: false },
+    { id: 2, content: "You have a new friend request", read: false },
+    { id: 3, content: "Your friend Jane shared a new post", read: true },
+  ];
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // TODO: Implement actual search functionality
+    console.log('Searching for:', searchQuery);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -17,14 +32,19 @@ export const Layout = ({ children }) => {
               <Link href="/">
                 <h1 className="text-3xl font-bold text-blue-600 mr-8">SocialConnect</h1>
               </Link>
-              <div className="hidden md:flex items-center">
-                <Search className="w-5 h-5 text-gray-400 absolute ml-3" />
-                <Input 
-                  type="text" 
-                  placeholder="Search..." 
-                  className="pl-10 w-64"
-                />
-              </div>
+              <form onSubmit={handleSearch} className="hidden md:flex items-center">
+                <div className="relative">
+                  <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                  <Input 
+                    type="text" 
+                    placeholder="Search..." 
+                    className="pl-10 w-64"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <Button type="submit" className="ml-2">Search</Button>
+              </form>
             </div>
             <nav className="hidden md:flex items-center space-x-4">
               <Link href="/">
@@ -39,13 +59,13 @@ export const Layout = ({ children }) => {
                   Profile
                 </Button>
               </Link>
-              <Button variant="ghost">
-                <Users className="w-5 h-5 mr-2" />
-                Friends
-              </Button>
-              <Button variant="ghost">
-                <Bell className="w-5 h-5" />
-              </Button>
+              <Link href="/friends">
+                <Button variant="ghost">
+                  <Users className="w-5 h-5 mr-2" />
+                  Friends
+                </Button>
+              </Link>
+              <Notifications initialNotifications={mockNotifications} />
               <Avatar>
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>CN</AvatarFallback>
@@ -69,22 +89,25 @@ export const Layout = ({ children }) => {
                   Profile
                 </Button>
               </Link>
-              <Button variant="ghost" className="w-full text-left mb-2">
-                <Users className="w-5 h-5 mr-2" />
-                Friends
-              </Button>
-              <Button variant="ghost" className="w-full text-left mb-2">
-                <Bell className="w-5 h-5 mr-2" />
-                Notifications
-              </Button>
-              <div className="flex items-center mt-2">
-                <Search className="w-5 h-5 text-gray-400 absolute ml-3" />
-                <Input 
-                  type="text" 
-                  placeholder="Search..." 
-                  className="w-full pl-10"
-                />
-              </div>
+              <Link href="/friends">
+                <Button variant="ghost" className="w-full text-left mb-2">
+                  <Users className="w-5 h-5 mr-2" />
+                  Friends
+                </Button>
+              </Link>
+              <form onSubmit={handleSearch} className="flex items-center mt-2">
+                <div className="relative flex-grow">
+                  <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                  <Input 
+                    type="text" 
+                    placeholder="Search..." 
+                    className="w-full pl-10"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <Button type="submit" className="ml-2">Search</Button>
+              </form>
             </nav>
           )}
         </div>
